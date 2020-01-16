@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Instant Chat</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="style.css">
+  <!-- Bootstrap and Fontawesome -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+</head>
+<body>
+  <div class="banner" id="banneralert">
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <p id="bannermessage">An error may have occured. Please refresh and try again.</p>
+    </div>
+  </div>
+  <div class="login" id="loginDiv">
+    <form id="loginBar" class="form-signin">
+      <span class="fa-stack fa-4x">
+        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+        <i class="fas fa-comments fa-stack-1x fa-inverse"></i>
+      </span>
+      <h1 class="h3 mb-3 font-weight-normal">Enter a Nickname</h1>
+      <label for="inputName" class="sr-only">Username</label>
+      <!-- Restrict to characters only -->
+      <input type="name" id="loginForm" class="form-control" placeholder="Name" required autofocus maxlength="15" onkeypress="return (event.charCode > 64 &&
+      event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || event.charCode == 13">
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Continue to Chat</button>
+    </form>
+  </div>
+  <div class="chatapplication" id="chatbox">
+
+    <!-- Type messages here -->
+    <form id="messageBar" action="">
+      <input id="messageForm" class="form-control" placeholder="Type a Message" required autocomplete="off" /><button class="btn btn-lg btn-primary btn-block">Send</button>
+    </form>
+
+    <!-- Sidebar -->
+    <div class="tab" id="sidebar">
+      <div class="userprofile">
+        <i class="fas fa-user-circle fa-3x"></i>
+        <p id="myname"></p>
+      </div>
+      <button class="tablinks" onclick="openChat(event, 'chatboxglobal')">
+        <i class="fas fa-comments fa-2x"></i>
+        <p>Global Chatroom</p>
+        <!-- <i class="fas fa-bell notification" id="notificationglobal"></i> -->
+      </button>
+
+      <!-- <input id="searchbar" type="text" onkeyup="myFunction()" placeholder="Search for a user"> -->
+      <input type="text" id="searchbar" class="form-control" placeholder="Search User or Group" autofocus maxlength="15" onkeypress="" onkeyup="searchUser()">
+
+      <p id="searchprompt">No results found</p>
+
+
+      <div id="userlist">
+        <!-- Javascript Add buttons for users -->
+        <!-- <button class="tablinks" onclick="openChat(event, 'chat')">Username</button> -->
+        <p id="usersheading">Users</p>
+        <div id="users">
+
+        </div>
+
+        <p id="groupsheading">Group Chats</p>
+        <div id="groups">
+          <!-- <button class="tablinks" onclick="openChat(event, 'groupchat')">
+            <i class="fas fa-users"></i>
+            <p>New Group Chat</p>
+          </button> -->
+        </div>
+
+      </div>
+
+      <div class="groupchatbutton" id="creategroupchatbutton">
+        <button class="tablinks" id="creategroupchat" data-toggle="modal" data-target="#userselectionmodal">
+          <i class="fas fa-plus"></i>
+          Create Group Conversation
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Javscript: Insert chat tabs below in this div -->
+    <div id="userPages">
+      <div id="chatboxglobal" class="tabcontent" >
+        <h3>Global Chatroom</h3>
+        <p id="usercounter">You are talking to all users online.</p>
+        <ul class="messages" id="globalmessages"></ul>
+      </div>
+    </div>
+
+    <!-- Javscript: Insert group chat tabs below in this div -->
+    <div id="groupChats">
+      <!-- <div id="groupchat0" class="tabcontent" style="display: none;">
+        <h3>Private Chatroom</h3>
+        <p>Drag and drop a user from the sidebar to add them to this chat.</p>
+        <ul class="messages" id="groupchatmessages0"></ul>
+      </div> -->
+    </div>
+
+    <!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button> -->
+
+
+  </div>
+
+  <div id = "userselectionmodal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Select Users</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <select class="custom-select" multiple id="userselection">
+        </select>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="userselectionsubmit" data-dismiss="modal">Submit</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="client.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "Chat App",
+  "version": "1.0",
+  "description": "Chat App Built Using Sockets.IO",
+  "dependencies": {
+    "boostrap": "^2.0.0",
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0"
+  }
+}
